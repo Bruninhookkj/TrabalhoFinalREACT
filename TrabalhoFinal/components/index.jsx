@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Modal,
-  Button,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Modal, Button,} from "react-native";
 
-// Simula a função que busca as taxas
+
 const getTaxasBCB = async () => {
   return {
-    cdi: 0.1325, // 13.25% ao ano
+    cdi: 0.1325, 
     selic: 0.1325,
   };
 };
@@ -25,7 +16,7 @@ const App = () => {
   const [resultado, setResultado] = useState(null);
   const [taxas, setTaxas] = useState({ cdi: 0.1325, selic: 0.1325 });
   const [infoModal, setInfoModal] = useState({ visible: false, content: "" });
-  const [modo, setModo] = useState("CDI"); // Novo estado
+  const [modo, setModo] = useState("CDI"); 
 
   useEffect(() => {
     async function fetchTaxas() {
@@ -59,7 +50,7 @@ const App = () => {
         taxaBase = taxas.selic;
         break;
       case "IPCA":
-        taxaBase = 0.045; // 4.5% ao ano como exemplo
+        taxaBase = 0.045; 
         break;
       default:
         taxaBase = taxas.cdi;
@@ -157,7 +148,7 @@ const App = () => {
         ))}
       </View>
 
-      {/* Formulário */}
+      
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -186,7 +177,6 @@ const App = () => {
         <Button title="Calcular" onPress={handleCalcular} />
       </View>
 
-      {/* Resultado */}
       {resultado && (
         <View style={styles.resultContainer}>
           <Text style={styles.resultTitle}>Resultado da Simulação:</Text>
@@ -208,7 +198,6 @@ const App = () => {
         </View>
       )}
 
-      {/* Modal de informações */}
       <Modal
         visible={infoModal.visible}
         transparent
@@ -231,7 +220,6 @@ const App = () => {
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: {
     padding: 20,
