@@ -1,7 +1,7 @@
 Calculadora de Rendimento LCI/LCA
 
 
-Alunos : Bruno e Eric
+Aluno: Bruno
 
 
 O objetivo do projeto é desenvolver uma calculadora para simulações de investimentos 
