@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Modal, Button,} from "react-native";
-
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Modal,
+  Button,
+} from "react-native";
 
 const getTaxasBCB = async () => {
   return {
-    cdi: 0.1325, 
+    cdi: 0.1325,
     selic: 0.1325,
   };
 };
@@ -16,7 +24,7 @@ const App = () => {
   const [resultado, setResultado] = useState(null);
   const [taxas, setTaxas] = useState({ cdi: 0.1325, selic: 0.1325 });
   const [infoModal, setInfoModal] = useState({ visible: false, content: "" });
-  const [modo, setModo] = useState("CDI"); 
+  const [modo, setModo] = useState("CDI");
 
   useEffect(() => {
     async function fetchTaxas() {
@@ -50,7 +58,7 @@ const App = () => {
         taxaBase = taxas.selic;
         break;
       case "IPCA":
-        taxaBase = 0.045; 
+        taxaBase = 0.045;
         break;
       default:
         taxaBase = taxas.cdi;
@@ -96,7 +104,7 @@ const App = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>💰 Simulador de LCI/LCA</Text>
+      <Text style={styles.title}> Simulador de LCI/LCA</Text>
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>CDI</Text>
@@ -124,15 +132,11 @@ const App = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Seleção de Modo */}
       <View style={styles.modoSelector}>
         {["CDI", "SELIC", "IPCA"].map((item) => (
           <TouchableOpacity
             key={item}
-            style={[
-              styles.modoButton,
-              modo === item && styles.modoButtonAtivo,
-            ]}
+            style={[styles.modoButton, modo === item && styles.modoButtonAtivo]}
             onPress={() => setModo(item)}
           >
             <Text
@@ -148,7 +152,6 @@ const App = () => {
         ))}
       </View>
 
-      
       <View style={styles.formContainer}>
         <TextInput
           style={styles.input}
@@ -174,7 +177,9 @@ const App = () => {
           onChangeText={setPercentualCDI}
         />
 
-        <Button title="Calcular" onPress={handleCalcular} />
+        <TouchableOpacity style={styles.calcButton} onPress={handleCalcular}>
+          <Text style={styles.calcButtonText}>Calcular</Text>
+        </TouchableOpacity>
       </View>
 
       {resultado && (
@@ -182,16 +187,14 @@ const App = () => {
           <Text style={styles.resultTitle}>Resultado da Simulação:</Text>
           <Text>Tipo: {resultado.tipo}</Text>
           <Text>Modo de Cálculo: {resultado.modo}</Text>
-          <Text>
-            Valor Investido: R$ {resultado.valorInvestido.toFixed(2)}
-          </Text>
+          <Text>Valor Investido: R$ {resultado.valorInvestido.toFixed(2)}</Text>
           <Text>Prazo: {resultado.prazo} meses</Text>
           <Text>
             % sobre {resultado.modo}: {(resultado.percentual * 100).toFixed(2)}%
           </Text>
           <Text>
-            Taxa {resultado.modo} atual:{" "}
-            {(resultado.taxaBase * 100).toFixed(2)}%
+            Taxa {resultado.modo} atual: {(resultado.taxaBase * 100).toFixed(2)}
+            %
           </Text>
           <Text>Rendimento: R$ {resultado.rendimento.toFixed(2)}</Text>
           <Text>Valor Final: R$ {resultado.valorFinal.toFixed(2)}</Text>
@@ -222,62 +225,116 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    paddingBottom: 50,
-    backgroundColor: "#f9f9f9",
+    padding: 24,
+    paddingBottom: 60,
+    backgroundColor: "#f5f7fa",
     flexGrow: 1,
   },
   title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    marginBottom: 16,
+    fontSize: 30,
+    fontWeight: "700",
+    marginBottom: 28,
     textAlign: "center",
-    color: "#2c3e50",
+    color: "#1f2d3d",
   },
+
+  
   infoRow: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 16,
+    marginBottom: 20,
     alignItems: "center",
+    flexWrap: "wrap",
   },
   label: {
     fontSize: 16,
     fontWeight: "600",
+    color: "#34495e",
+    marginBottom: 6,
   },
   helpButton: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "#3498db",
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: "#2980b9",
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 6,
+    marginHorizontal: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
+    elevation: 2,
   },
   helpText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 16,
   },
+
+  // Input + Botão
   formContainer: {
-    gap: 12,
-    marginBottom: 20,
+    marginBottom: 30,
+    backgroundColor: "#ffffff",
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5,
+    gap: 16,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#aaa",
-    padding: 10,
-    borderRadius: 5,
+    borderColor: "#dfe6e9",
+    padding: 14,
+    borderRadius: 8,
+    fontSize: 16,
+    backgroundColor: "#fdfdfd",
+    color: "#2d3436",
   },
+  calcButton: {
+    backgroundColor: "#27ae60",
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  calcButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 17,
+    letterSpacing: 1,
+  },
+
+  // Resultado
   resultContainer: {
     marginTop: 20,
-    padding: 15,
-    backgroundColor: "#ecf0f1",
-    borderRadius: 8,
+    padding: 22,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+    gap: 6,
   },
   resultTitle: {
     fontWeight: "bold",
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: 20,
+    marginBottom: 12,
+    color: "#2c3e50",
+    textAlign: "center",
   },
+
+  // Modal
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.4)",
@@ -287,48 +344,64 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 20,
-    maxWidth: 350,
+    borderRadius: 12,
+    padding: 24,
+    maxWidth: 360,
+    width: "100%",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   modalText: {
     fontSize: 16,
-    marginBottom: 12,
+    marginBottom: 18,
+    color: "#2c3e50",
+    lineHeight: 22,
   },
   closeButton: {
     alignSelf: "flex-end",
-    padding: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
     backgroundColor: "#3498db",
     borderRadius: 6,
   },
   closeButtonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 15,
   },
+
+
   modoSelector: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 20,
-    gap: 10,
+    marginBottom: 22,
+    gap: 12,
   },
   modoButton: {
     borderWidth: 1,
-    borderColor: "#3498db",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 6,
+    borderColor: "#2980b9",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    backgroundColor: "#f0f8ff",
   },
   modoButtonAtivo: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#2980b9",
   },
   modoButtonText: {
-    color: "#3498db",
-    fontWeight: "bold",
+    color: "#2980b9",
+    fontWeight: "600",
+    fontSize: 14,
   },
   modoButtonTextAtivo: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "600",
+    fontSize: 14,
   },
 });
+
 
 export default App;
