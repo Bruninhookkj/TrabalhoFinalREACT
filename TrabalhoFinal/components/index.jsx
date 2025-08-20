@@ -6,17 +6,20 @@ import Papa from 'papaparse';
 const getTaxasBCB = async () => {
     try {
         const cdiResponse = await axios.get(
-            "https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/ultimos/1?formato=csv"
+            "https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/dados?formato=csv"
         );
         const selicResponse = await axios.get(
-            "https://api.bcb.gov.br/dados/serie/bcdata.sgs.4186/ultimos/1?formato=csv"
+            "https://api.bcb.gov.br/dados/serie/bcdata.sgs.4186/dados?formato=csv"
         );
         
-        const cdiParsed = Papa.parse(cdiResponse.data, { header: false, skipEmptyLines: true });
-        const selicParsed = Papa.parse(selicResponse.data, { header: false, skipEmptyLines: true });
+        const cdiParsed = Papa.parse(cdiResponse.data, { header: true, skipEmptyLines: true });
+        const selicParsed = Papa.parse(selicResponse.data, { header: true, skipEmptyLines: true });
 
-        const cdiValue = parseFloat(cdiParsed.data[0][1].replace(',', '.'));
-        const selicValue = parseFloat(selicParsed.data[0][1].replace(',', '.'));
+        const cdiLatest = cdiParsed.data[cdiParsed.data.length - 1];
+        const selicLatest = selicParsed.data[selicParsed.data.length - 1];
+
+        const cdiValue = parseFloat(cdiLatest.valor.replace(',', '.'));
+        const selicValue = parseFloat(selicLatest.valor.replace(',', '.'));
 
         return {
             cdi: cdiValue / 100,
@@ -232,6 +235,13 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginBottom: 40,
         color: "#2C3E50",
+    },
+    welcomeText: {
+        fontSize: 20,
+        fontWeight: "600",
+        textAlign: "center",
+        marginBottom: 20,
+        color: "#16A085",
     },
     card: {
         backgroundColor: "#FFFFFF",
